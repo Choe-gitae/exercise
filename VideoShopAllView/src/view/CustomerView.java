@@ -238,6 +238,7 @@ public class CustomerView extends JPanel
 		
 		try {
 			model = new CustomerDaoImpl();
+			System.out.println("고객관리 드라이버 로딩 성공");
 		} catch (Exception e) {
 			System.out.println("고객관리 드라이버로딩 실패 : "+e.getMessage());
 		}// try~catch

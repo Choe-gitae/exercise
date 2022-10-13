@@ -13,15 +13,14 @@ public class CustomerDaoImpl implements CustomerDao{
 
 	// 필드
 	final static String DRIVER 	= "oracle.jdbc.driver.OracleDriver";
-	final static String URL 	= "jdbc:oracle:thin:@192.168.0.164:1521:xe";
-	final static String USER 	= "BKjeon";
-	final static String PASS 	= "jeon";
+	final static String URL 	= "jdbc:oracle:thin:@127.0.0.1:1521:xe";
+	final static String USER 	= "choe";
+	final static String PASS 	= "1234";
 
 	// 생성자
 	public CustomerDaoImpl() throws Exception{
 		// 1. 드라이버로딩
 		Class.forName(DRIVER);
-		System.out.println("드라이버 로딩 성공");
 	}
 
 	
@@ -148,41 +147,6 @@ public class CustomerDaoImpl implements CustomerDao{
 		
 	}
 	
-	@Override
-	public CustomerVO selectByNameVo(String name) throws Exception {
-		// 2. Connection 연결객체 얻어오기
-				Connection con = null;			// 연결객체
-				PreparedStatement ps = null;	// 전송객체
-				CustomerVO vo = new CustomerVO();	// VO
-
-				try {
-					con = DriverManager.getConnection(URL, USER, PASS);		// DB연결
-
-					// 3. sql 문장 만들기
-					String sql = "SELECT * FROM cust WHERE name=?";
-
-					// 4. sql 전송객체 (PreparedStatement)		
-					ps = con.prepareStatement(sql);
-					ps.setString(1, name);
-
-					// 5. sql 전송
-					ResultSet rs = ps.executeQuery();
-					if (rs.next()) {
-						vo.setAddr(rs.getString("ADDR"));
-						vo.setTel(rs.getString("TEL"));
-						vo.setAddTel(rs.getString("ADDTEL"));
-						vo.setEmail(rs.getString("EMAIL"));
-						vo.setName(rs.getString("NAME"));
-					}
-					return vo;
-					
-				} finally {
-					// 6. 닫기 
-					ps.close();
-					con.close();
-				}// try~finally
-				
-	}
 	
 
 	/*

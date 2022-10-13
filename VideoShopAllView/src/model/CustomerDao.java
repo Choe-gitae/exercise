@@ -1,6 +1,5 @@
 package model;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import model.vo.CustomerVO;
@@ -10,6 +9,5 @@ public interface CustomerDao {
 	public void insertCustomer(CustomerVO vo) throws Exception;				// 회원가입
 	public CustomerVO selectByTel(String tel) throws Exception;				// 전화번호로 검색
 	public ArrayList<String> selectByName(String name) throws Exception;	// 이름으로 검색
-	public CustomerVO selectByNameVo(String name) throws Exception;			// 이름으로 검색
 	public int updateCustomer(CustomerVO vo) throws Exception;				// 고객정보 수정
 }

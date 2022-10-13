@@ -48,9 +48,9 @@ public class VideoView extends JPanel
 	public void connectDB(){	// DB연결
 		try {
 			model = new VideoDaoImpl();
-			System.out.println("비디오 관리 드라이버 로딩 성공");
+			System.out.println("비디오관리 드라이버 로딩 성공");
 		} catch (Exception e) {
-			System.out.println("비디오 관리 드라이버 로딩 실패 : "+e.getMessage());
+			System.out.println("비디오관리 드라이버 로딩 실패 : "+e.getMessage());
 			e.printStackTrace();
 		}// try~catch
 	}
@@ -76,8 +76,9 @@ public class VideoView extends JPanel
 		bVideoModify.addActionListener(btnHandler);
 		bVideoDelete.addActionListener(btnHandler);
 		tfVideoSearch.addActionListener(btnHandler);
-		// 검색한 열을 클릭했을 때
 		
+		
+		// 검색한 열을 클릭했을 때
 		tableVideo.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent ev){
 				
@@ -86,12 +87,22 @@ public class VideoView extends JPanel
 					int col = 0;	// 검색한 열을 클릭했을 때 클릭한 열의 비디오번호
 					// Object -> Integer -> int 형변환
 					int vNum = ((Integer)tableVideo.getValueAt(row, col)).intValue();
-					JOptionPane.showMessageDialog(null, vNum);
+					// JOptionPane.showMessageDialog(null, vNum);
 					
+					//
+					VideoVO vo = model.selectByVnum(vNum);
+					
+					// 화면에 비디오정보의 값들을 각각 출력
+					tfVideoNum.setText(String.valueOf(vo.getVidno()));
+					comVideoJanre.setSelectedItem(vo.getGen());
+					tfVideoActor.setText(vo.getAct());
+					tfVideoDirector.setText(vo.getAct());
+					tfVideoTitle.setText(vo.getAct());
+					taVideoContent.setText(vo.getSumm());
 					 
 				}catch(Exception ex){
 					System.out.println("실패 : "+ ex.getMessage());
-				}
+				}// try~catch
 				
 			}
 		});
@@ -140,13 +151,15 @@ public class VideoView extends JPanel
 		// 3. 모델의 insertVideo() 호출
 		try {
 			model.insertVideo(vo, count);
+			
 			JOptionPane.showMessageDialog(null, "입고");
 			// 4. 화면 지우기
 			clearText();
+			
 		} catch (Exception e) {
 			System.out.println("비디오 입고 실패 : "+e.getMessage());
 			e.printStackTrace();
-		}
+		}// try~catch
 		 
 	}// registVideo()
 	
@@ -171,22 +184,49 @@ public class VideoView extends JPanel
 	
 	// 수정 클릭시 - 비디오 정보 수정
 	public void modifyVideo(){
-		JOptionPane.showMessageDialog(null, "수정");
-	}
+		VideoVO vo = new VideoVO();
+		vo.setGen(String.valueOf(comVideoJanre.getSelectedItem()));
+		vo.setVidno(Integer.parseInt(tfVideoNum.getText()));
+		vo.setAct(tfVideoActor.getText());
+		vo.setDir(tfVideoDirector.getText());
+		vo.setSumm(taVideoContent.getText());
+		vo.setTit(tfVideoTitle.getText());
+		
+		try {
+			int result = model.modifyVideo(vo);
+			JOptionPane.showMessageDialog(null, "수정한 행 수 : "+result);
+		} catch (Exception e) {
+			System.out.println("수정 실패 : "+e.getMessage());
+			e.printStackTrace();
+		}// try~catch
+		
+	}// modifyVideo()
 	
 	
 	// 삭제 클릭시 - 비디오 정보 삭제
 	public void deleteVideo(){
+		int vnum = Integer.parseInt(tfVideoNum.getText());
 		
-		JOptionPane.showMessageDialog(null, "삭제");
-	}
+		try {
+			int result = model.deleteVideo(vnum);
+			JOptionPane.showMessageDialog(null, "삭제한 행 수 : "+result);
+		} catch (Exception e) {
+			System.out.println("삭제 실패 : "+e.getMessage());
+			e.printStackTrace();
+		}// try~catch
+		
+	}// deleteVideo()
 	
 	// 비디오현황검색
 	public void searchVideo(){
-		//JOptionPane.showMessageDialog(null, "검색");
 		try {
-			tbModelVideo.data = model.selectVideo();
+			// 사용자가 선택하거나 입력한 값들 얻어오기
+			int idx = comVideoSearch.getSelectedIndex();
+			String word = tfVideoSearch.getText();
+			
+			tbModelVideo.data = model.selectVideo(idx, word);
 			tbModelVideo.fireTableDataChanged();	// 모델쪽에서 데이터 변경을 뷰 쪽으로 신호전달
+			
 		} catch (Exception e) {
 			System.out.println("검색 실패 : "+e.getMessage());
 		}
