@@ -34,7 +34,7 @@ public class InfoModelImpl implements InfoModel {
 		int ret = 0;					// 입력된 행 수
 		
 		try {
-			con = DriverManager.getConnection(URL, USER, PASS);
+			con = DriverManager.getConnection(URL, USER, PASS);		// DB연결
 
 			// 3. sql 문장
 			String sql = " INSERT INTO info_tab(name, jumin, tel, gender, age, home) "
@@ -66,8 +66,8 @@ public class InfoModelImpl implements InfoModel {
 	/*
 	 * 함수명 : selectAll
 	 * 인자	: 없음
-	 * 리턴값	: ArrayList<InfoVO>
-	 * 역할	: DB 테이블 데이터 ArrayList<InfoVO>에 저장
+	 * 리턴값	: 고객정보
+	 * 역할	: DB 테이블 데이터 모두 검색 후 리턴
 	 */
 	@Override
 	public ArrayList<InfoVO> selectAll() throws SQLException {
@@ -208,7 +208,7 @@ public class InfoModelImpl implements InfoModel {
 		int ret = 0;					// 업데이트한 행 수
 		
 		try {
-			con = DriverManager.getConnection(URL, USER, PASS);
+			con = DriverManager.getConnection(URL, USER, PASS);		// DB연결
 
 			// 3. sql 문장
 			String sql = " UPDATE info_tab SET NAME=?, JUMIN=?, TEL=?, GENDER=?, HOME=?, AGE=? WHERE TEL=? ";
@@ -226,13 +226,12 @@ public class InfoModelImpl implements InfoModel {
 			// 5. 전송객체
 			ret = ps.executeUpdate();
 			
-			return ret;
-			
 		} finally {
 			// 6. 닫기
 			ps.close();
 			con.close();
 		}// try~finally
+		return ret;
 		
 	}// edit()
 }
