@@ -28,19 +28,19 @@ public class InsertEmp {
 			String sql = "INSERT INTO emp(empno, ename, sal, job) VALUES(5555,?,?,?)";
 			
 			// 4. SQL 전송객체
-			PreparedStatement pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, name);
-			pstmt.setInt(2, sal);
-			pstmt.setString(3, job);
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, name);
+			ps.setInt(2, sal);
+			ps.setString(3, job);
 			
 			// 5. SQL 전송
 			//	- excuteQuery()		:  SELECT					return ResultSet
 			//	- excuteUpdate()	:  INSERT/DELETE/UPDATE		return int
-			int result = pstmt.executeUpdate();		// 이미 sql 연결함
+			int result = ps.executeUpdate();		// 이미 sql 연결함
 			System.out.println(result+"행을 실행");
 			
 			// 6. 닫기
-			pstmt.close();
+			ps.close();
 			con.close();
 			
 		} catch (Exception e) {

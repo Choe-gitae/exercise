@@ -45,6 +45,9 @@ public class SelectEmp {
 		} catch (Exception e) {
 			System.out.println("DB 실패 : "+e);
 		}
+		for (String string : args) {
+			
+		}
 		
 	}
 

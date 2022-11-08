@@ -12,7 +12,7 @@ public class SelectEmp {
 			System.out.println("드라이버 로딩 성공");
 			
 			// 2. 연결객체 얻어오기
-			String url = "jdbc:oracle:thin:@192.168.0.28:1521:xe";
+			String url = "jdbc:oracle:thin:@192.168.0.28:1521:xe";	// 127.0.0.1
 			String user = "scott";
 			String pass = "tiger";
 			
@@ -23,12 +23,12 @@ public class SelectEmp {
 			String sql = "SELECT empno, ename, sal, job FROM emp";
 			
 			// 4. SQL 전송객체
-			PreparedStatement pstmt = con.prepareStatement(sql);
+			PreparedStatement ps = con.prepareStatement(sql);
 
 			// 5. SQL 전송
 			//	- excuteQuery()		:  SELECT					return ResultSet
 			//	- excuteUpdate()	:  INSERT/DELETE/UPDATE		return int
-			ResultSet rs = pstmt.executeQuery();		// 이미 sql 연결함
+			ResultSet rs = ps.executeQuery();		// 이미 sql 연결함
 			while (rs.next()) {
 				int empno 		= rs.getInt("EMPNO");
 				String ename 	= rs.getString("ENAME");
@@ -38,7 +38,7 @@ public class SelectEmp {
 			}
 			
 			// 6. 닫기
-			pstmt.close();
+			ps.close();
 			con.close();
 			
 		} catch (Exception e) {
